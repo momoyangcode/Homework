@@ -59,23 +59,20 @@ function zoo(
   this.existedAnimal = zooExistedAnimal;
   this.existedAnimalNum = zooExistedAnimalNum;
   this.maxNumAnimals = zooMaxNumAnimals;
+  this.currentTotalNum = 0;
 
-  //Function-- Calculate the current total amount of animals in the zoo.
-  this.numAnimals = function () {
-    let numAnimals = 0;
-    for (let i = 0; i < zooExistedAnimalNum.length; i++) {
-      numAnimals += zooExistedAnimalNum[i];
-    }
-    this.currentTotalNum = numAnimals;
-  };
-  this.numAnimals();
+  for (let i = 0; i < zooExistedAnimalNum.length; i++) {
+    this.currentTotalNum += zooExistedAnimalNum[i];
+  }
 
   this.addAnimals = function (animalsName, animalAmount) {
     const extraNumAnimals = this.maxNumAnimals - this.currentTotalNum;
+    const isNewAnimalType = !this.existedAnimal.includes(animalsName);
+
     if (
       extraNumAnimals >= animalAmount &&
       animalAmount !== 0 &&
-      !this.existedAnimal.includes(animalsName)
+      isNewAnimalType
     ) {
       this.existedAnimal.push(animalsName);
       this.existedAnimalNum.push(animalAmount);
