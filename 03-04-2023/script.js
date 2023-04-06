@@ -51,51 +51,54 @@ let myFavoriteAnimals1 = new myFavoriteAnimals('dog', 1, 'mammal', 4);
 
 function zoo(
   zooLocation,
-  zooExistedAnimal,
-  zooExistedAnimalNum,
+  zooExistingAnimal,
+  zooExistingAnimalNum,
   zooMaxNumAnimals
 ) {
   this.location = zooLocation;
-  this.existedAnimal = zooExistedAnimal;
-  this.existedAnimalNum = zooExistedAnimalNum;
+  this.existingAnimal = zooExistingAnimal;
+  this.existingAnimalNum = zooExistingAnimalNum;
   this.maxNumAnimals = zooMaxNumAnimals;
   this.currentTotalNum = 0;
 
-  for (let i = 0; i < zooExistedAnimalNum.length; i++) {
-    this.currentTotalNum += zooExistedAnimalNum[i];
+  //Calculate the current total numbers of animals
+  for (let i = 0; i < zooExistingAnimalNum.length; i++) {
+    this.currentTotalNum += zooExistingAnimalNum[i];
   }
 
-  this.addAnimals = function (animalsName, animalAmount) {
-    const extraNumAnimals = this.maxNumAnimals - this.currentTotalNum;
-    const isNewAnimalType = !this.existedAnimal.includes(animalsName);
+  //Function-- add animals(which the zoo currently doesn't have) within the max spaces
+  this.addAnimals = function (animalsType, animalAmount) {
+    const extraSpaces = this.maxNumAnimals - this.currentTotalNum;
+    const isNewAnimalType = !this.existingAnimal.includes(animalsType);
+    const addAnimalType = this.existingAnimal.push(animalsType);
 
-    if (
-      extraNumAnimals >= animalAmount &&
-      animalAmount !== 0 &&
+    //when there are enough spaces for the adding animal amount
+    if (extraSpaces >= animalAmount && animalAmount !== 0 && isNewAnimalType) {
+      addAnimalType;
+      this.existingAnimalNum.push(animalAmount);
+      this.currentTotalNum += animalAmount;
+      console.log(`we have added ${animalAmount} ${animalsType} to the zoo`);
+    } else if (
+      //when there are spaces but not enough spaces for the adding animal amount
+      extraSpaces < animalAmount &&
+      extraSpaces !== 0 &&
       isNewAnimalType
     ) {
-      this.existedAnimal.push(animalsName);
-      this.existedAnimalNum.push(animalAmount);
-      this.currentTotalNum += animalAmount;
-      console.log(`we have added ${animalAmount} ${animalsName} to the zoo`);
-    } else if (
-      extraNumAnimals < animalAmount &&
-      extraNumAnimals !== 0 &&
-      !this.existedAnimal.includes(animalsName)
-    ) {
-      this.existedAnimal.push(animalsName);
-      this.existedAnimalNum.push(extraNumAnimals);
-      this.currentTotalNum += extraNumAnimals;
+      addAnimalType;
+      this.existingAnimalNum.push(extraSpaces);
+      this.currentTotalNum += extraSpaces;
       console.log(
-        `Currently we can only take ${extraNumAnimals} ${animalsName}, and we have added ${extraNumAnimals} ${animalsName} to the zoo.`
+        `Currently we can only take ${extraSpaces} ${animalsType}, and we have added ${extraSpaces} ${animalsType} to the zoo.`
       );
     } else if (animalAmount === 0) {
-      console.log(`Please contact us when ${animalsName} is available`);
+      //if the input of animal amount is 0
+      console.log(`Please contact us when ${animalsType} is available`);
     } else {
+      //When there is no extra spaces or we already have this kind of animal in the zoo
       console.log(
         `Sorry, currently we are not going to take ${
           animalAmount === 1 ? 'this' : 'these'
-        } ${animalsName}`
+        } ${animalsType}`
       );
     }
   };
